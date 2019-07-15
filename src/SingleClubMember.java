@@ -41,6 +41,6 @@ public class SingleClubMember extends Members {
 
 	@Override
 	public String toString() {
-		return "SingleClubMember [club=" + club + ", id=" + id + ", name=" + name + "]";
+		return "SingleClubMember [name=" + name + ", id=" + id + ", club=" + club + "]";
 	}
 }
