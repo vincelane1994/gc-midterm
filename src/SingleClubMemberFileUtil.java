@@ -2,8 +2,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FitnessMemberFileUtil {
-private static FileLinesHelper linesHelper = new FileLinesHelper("members.txt");
+public class SingleClubMemberFileUtil {
+private static FileLinesHelper linesHelper = new FileLinesHelper("singleClubMembers.txt");
 	
 	// Modify this method as necessary to convert a line of text from the file to a new item instance
 	private static SingleClubMember convertLineToItem(String line) {
@@ -19,9 +19,9 @@ private static FileLinesHelper linesHelper = new FileLinesHelper("members.txt");
 		return String.format("%s\t%d\t%s", member.getName(), member.getId(), member.getClub());
 	}
 
-	public static List<Members> readFile() {
+	public static List<SingleClubMember> readFile() {
 		List<String> lines = linesHelper.readFile();
-		List<Members> items = new ArrayList<>(lines.size());//pre=allocating enough memory by setting the max to the same as lines list
+		List<SingleClubMember> items = new ArrayList<>(lines.size());//pre=allocating enough memory by setting the max to the same as lines list
 		for (String line : lines) {
 			items.add(convertLineToItem(line));
 		}

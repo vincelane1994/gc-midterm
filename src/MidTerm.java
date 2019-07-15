@@ -12,10 +12,10 @@ public class MidTerm {
 	static Scanner scnr = new Scanner(System.in);
 	public static void main(String[] args) {
 		boolean mainMenu = true;//As long as this is true it will keep looping the program
-		Path membersPath = Paths.get("members.txt");
-		if(Files.notExists(membersPath)) {
+		Path scmPath = Paths.get("singleClubMembers.txt");
+		if(Files.notExists(scmPath)) {
 			try {
-				Files.createFile(membersPath);
+				Files.createFile(scmPath);
 			}catch (IOException e) {
 				System.out.println("Could not create file. " + e);
 			}
@@ -24,6 +24,14 @@ public class MidTerm {
 		if(Files.notExists(clubsPath)) {
 			try {
 				Files.createFile(clubsPath);
+			}catch (IOException e) {
+				System.out.println("Could not create file. " + e);
+			}
+		}
+		Path mcmPath = Paths.get("multiClubMembers.txt");
+		if(Files.notExists(mcmPath)) {
+			try {
+				Files.createFile(mcmPath);
 			}catch (IOException e) {
 				System.out.println("Could not create file. " + e);
 			}
@@ -108,7 +116,7 @@ public class MidTerm {
 					SingleClubMember newSingleClubMember = new SingleClubMember(id, name, whatClub);//This section is for adding new SingleClub members
 					System.out.println(newSingleClubMember);
 					try {
-						FitnessMemberFileUtil.appendToFile(newSingleClubMember);
+						SingleClubMemberFileUtil.appendToFile(newSingleClubMember);
 					} catch (IOException e) {
 						System.out.println("Could not edit file.");
 					}
