@@ -7,6 +7,7 @@ public class MidTerm {
 		System.out.println("These students really liked bananas. They ate bananans for breakfast, lunch and dinner!");// Shehzad
 		System.out.println("These students were lazy students, so they stole from the tourists to pay for their banana addiction.");
 		System.out.println("The tourist really loved their bananas getting stolen too!");
+		System.out.println("this is the final try!!!");
 				
 	}
 	
