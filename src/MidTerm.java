@@ -1,9 +1,11 @@
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+
 
 public class MidTerm {
 	
@@ -68,12 +70,15 @@ public class MidTerm {
 	public static void addMember(Scanner scnr) {//This method is to add new members to the clubs
 		boolean addNewMember = true;
 		int userChoice = 0;
+		int clubChoice =0;
+		String whatClub = null;
 		do {
 			int id;
 			String name;
 			System.out.println("What type of member are you adding?\n1. Single Club Member\n2. Multi-Club Member\n3. Main Menu");
 			try {
 				userChoice = scnr.nextInt();
+				scnr.nextLine();
 			}catch(InputMismatchException ex) {
 				System.out.println("That was not a valid number.(Please enter a number 1-3)");
 			}
@@ -84,7 +89,29 @@ public class MidTerm {
 					System.out.print("What is the new Members id number?: ");
 					id = scnr.nextInt();
 					scnr.nextLine();
-					//SingleClubMember newSingleClubMember = new SingleClubMember(id, name);//This section is for adding new SingleClub members
+					System.out.println("What club do you want to add " + name + " to?\n1. Detroit\n2. Ann Arbor\n3. Plymouth\n4. Taylor");
+					clubChoice = scnr.nextInt();
+					switch(clubChoice) {
+					case 1://Detroit
+						whatClub = "Detroit";
+						break;
+					case 2://Ann Arobr
+						whatClub = "Ann Arbor";
+						break;
+					case 3://Plymouth
+						whatClub = "Plymouth";
+						break;
+					case 4://Taylor
+						whatClub = "Taylor";
+						break;
+					}
+					SingleClubMember newSingleClubMember = new SingleClubMember(id, name, whatClub);//This section is for adding new SingleClub members
+					System.out.println(newSingleClubMember);
+					try {
+						FitnessMemberFileUtil.appendToFile(newSingleClubMember);
+					} catch (IOException e) {
+						System.out.println("Could not edit file.");
+					}
 					break;
 				case 2://Multi-Club Member
 					System.out.print("What is the new member's name?: ");

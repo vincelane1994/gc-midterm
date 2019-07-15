@@ -1,8 +1,7 @@
 
 public class SingleClubMember extends Members {
 	private String club;
-	private int id;
-	private String name;
+
 
 
 	public SingleClubMember() {
@@ -11,6 +10,8 @@ public class SingleClubMember extends Members {
 
 	public SingleClubMember(int id, String name, String club) {
 		super();
+		this.name = name;
+		this.id = id;
 		this.club = club;
 	}
 

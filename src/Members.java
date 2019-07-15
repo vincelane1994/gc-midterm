@@ -1,8 +1,8 @@
 
-public class Members {
+public abstract class Members {
 	
-	private int id;
-	private String name;
+	protected int id;
+	protected String name;
 	
 
 	public Members(){
