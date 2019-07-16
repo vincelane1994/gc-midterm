@@ -4,6 +4,7 @@ public abstract class Members {
 	protected int id;
 	protected String name;
 	
+	
 
 	public Members(){
 
