@@ -305,6 +305,7 @@ public class MidTerm {
 			if (smc.getId() == userId) {
 				if (smc.getClub().equalsIgnoreCase(clubName)) {
 					verifyMembership = true;
+					System.out.println("Welcome Valued Member ! Upgrade today to get 50 points towards every visit");
 				} else {
 					verifyMembership = false;
 				}
@@ -335,7 +336,12 @@ public class MidTerm {
 		return verifyMembership;
 	}
 	public static void checkInMaster(Scanner scnr) {
-		System.out.println("1. Detroit\n2. Ann Arbor\n3. Plymouth\n4. Taylor");
+		int i = 0 ;
+		List<Club> club = ClubUtilFile.readFile();
+		for (Club clubs : club) {
+			i++;
+			System.out.printf("%-4s%-15s%-30s\n" ,i + ". ", "Club " + clubs.getName(), "Address " + clubs.getAdress() );
+		}
 		System.out.println("What location would you like to check in?");
 		int location = scnr.nextInt();
 		scnr.nextLine();

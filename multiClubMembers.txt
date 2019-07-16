@@ -1,6 +1,6 @@
 ElleDriver	9230	0
 Mia Wallace	7956	0
-Richie Gecko	3217	0
+Richie Gecko	3217	50
 Marsellus Wallace	3700	0
 Mickey Knox	2059	50
 Mallory Knox	2732	0

@@ -3,6 +3,10 @@ public class Club {
 	private String name;
 	private String adress;
 	
+	public Club() {
+		
+	}
+	
 	public String getAdress() {
 		return adress;
 	}
@@ -11,7 +15,6 @@ public class Club {
 		this.adress = adress;
 	}
 
-	public Club() {}
 	
 	public Club(String name, String address) {
 		this.name = name;
