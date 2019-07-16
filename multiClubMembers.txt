@@ -5,3 +5,4 @@ Marsellus Wallace	3700	0
 Mickey Knox	2059	50
 Mallory Knox	2732	0
 Tom Hanks	5948	0
+David Watkins	9485	50

@@ -58,7 +58,6 @@ public class MidTerm {
 						scnr.nextLine();
 					}
 				}while(validChoice);
-				scnr.nextLine();
 				generateBill(userID);
 				
 				break;
@@ -411,6 +410,11 @@ public class MidTerm {
 				System.out.println("That was not a valid option.\n");
 				scnr.nextLine();
 				validChoice = true;
+			}
+			if(location != 1 || location != 2 || location != 3 || location != 4) {
+				System.out.println("Please select a number 1-4");
+				validChoice = true;
+				break;
 			}
 		}while(validChoice);
 		do {
