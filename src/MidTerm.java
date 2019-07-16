@@ -11,15 +11,25 @@ public class MidTerm {
 	
 	static Scanner scnr = new Scanner(System.in);
 	public static void main(String[] args) {
+		boolean validChoice;
+		int menuChoice = 0;
 		ensureAllFilesExist();//Put all of the Lines of code dealing with ensuring the .txt files were there into a single method.
 		int som = 0;
 		boolean mainMenu = true;//As long as this is true it will keep looping the program
 		do {
 			System.out.println("===Main Menu===\n1. Add Member\n2. Remove Member\n3. Display Member Information\n4. Check In\n5. Generate Bill\n6. Exit");//
-			
-			System.out.print("What would you like to do?: ");
-			int menuChoice = scnr.nextInt();//Declares the choice for the switch
-			scnr.nextLine();
+			do {
+				System.out.print("What would you like to do?: ");
+				try {
+					menuChoice = scnr.nextInt();//Declares the choice for the switch
+					scnr.nextLine();
+					validChoice = false;
+				}catch(InputMismatchException ex) {
+					System.out.println("That was not a valid option.\n");
+					scnr.nextLine();
+					validChoice = true;
+				}
+			}while(validChoice);
 			
 			switch(menuChoice) {
 			case 1://Add Member
@@ -35,8 +45,19 @@ public class MidTerm {
 				checkInMaster(scnr);
 				break;
 			case 5://Generate Bill
-				System.out.print("What is the members id number?: ");
-				int userID = scnr.nextInt();
+				int userID = 0;
+				do {
+					System.out.print("What is the members id number?: ");
+					try {
+						userID = scnr.nextInt();
+						scnr.nextLine();
+						validChoice = false;
+					}catch(InputMismatchException ex) {
+						System.out.println("That was not valid");
+						validChoice = true;
+						scnr.nextLine();
+					}
+				}while(validChoice);
 				scnr.nextLine();
 				generateBill(userID);
 				
@@ -65,6 +86,9 @@ public class MidTerm {
 				scnr.nextLine();
 			}catch(InputMismatchException ex) {
 				System.out.println("That was not a valid number.(Please enter a number 1-3)");
+				scnr.nextLine();
+				addNewMember = true;
+				continue;
 			}
 			switch (userChoice) {
 				case 1://Add Single Club Member
@@ -152,10 +176,21 @@ public class MidTerm {
 	}
 	public static void printSingleOrMulti(Scanner scnr) {
 		boolean goAhead = true;
+		int selection = 0;
+		boolean validChoice = true;
 		do {
-			System.out.print("What group do you want to see?:\n1. Single Club Memebers\n2. Multi Club members");
-			int selection = scnr.nextInt();
-			scnr.nextLine();
+			do {
+				System.out.print("What group do you want to see?:\n1. Single Club Memebers\n2. Multi Club members");
+				try {
+					selection = scnr.nextInt();
+					validChoice = false;
+					scnr.nextLine();
+				}catch(InputMismatchException ex) {
+					System.out.println("That was not a valid option.");
+					scnr.nextLine();
+					validChoice = true;
+				}
+			}while(validChoice);
 			switch (selection) {
 			case 1:
 				printSingleClubMember();
@@ -239,9 +274,18 @@ public class MidTerm {
 		}
 	}
 	public static void removeMember(Scanner scnr) {
+		boolean validChoice = true;
+		int removeID = 0;
+		do {
 		System.out.println("What is the ID of the member you would like to remove.");
-		int removeID = scnr.nextInt();
-		scnr.nextLine();
+		try {
+			removeID = scnr.nextInt();
+			scnr.nextLine();
+		}catch(InputMismatchException ex) {
+			System.out.println("That was not a valid ID");
+			scnr.nextLine();
+		}
+		}while(validChoice);
 		removeSingleClubMember(removeID);//If the removeID variable matches any of the ID's in the SingleClubMember list it will remove that member. Otherwise it does nothing.
 		removeMultiClubMember(removeID);//If the removeID variable matches any of the ID's in the MultiClubMember list it will remove that member. Otherwise it does nothing.
 	}
@@ -338,17 +382,37 @@ public class MidTerm {
 		return verifyMembership;
 	}
 	public static void checkInMaster(Scanner scnr) {
+		boolean validChoice = true;
+		int userId = 0;
+		int location = 0;
 		int i = 0 ;
 		List<Club> club = ClubUtilFile.readFile();
 		for (Club clubs : club) {
 			i++;
 			System.out.printf("%-4s%-15s%-30s\n" ,i + ". ", "Club " + clubs.getName(), "Address " + clubs.getAdress() );
 		}
-		System.out.println("What location would you like to check in?");
-		int location = scnr.nextInt();
-		scnr.nextLine();
-		System.out.println("What is your ID?");
-		int userId = scnr.nextInt();
+		do {
+			System.out.println("What location would you like to check in?");
+			try {
+				location = scnr.nextInt();
+				validChoice = false;
+			}catch(InputMismatchException ex) {
+				System.out.println("That was not a valid option.\n");
+				scnr.nextLine();
+				validChoice = true;
+			}
+		}while(validChoice);
+		do {
+			System.out.println("What is your ID?");
+			try {
+				userId = scnr.nextInt();
+				validChoice = false;
+			}catch(InputMismatchException ex) {
+				System.out.println("That was not a valid option.");
+				scnr.nextLine();
+				validChoice = true;
+			}
+		}while(validChoice);
 		scnr.nextLine();
 		switch (location) {
 		case 1:
