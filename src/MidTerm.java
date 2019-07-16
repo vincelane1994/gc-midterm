@@ -1,64 +1,34 @@
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
-
 
 public class MidTerm {
 	
 	static Scanner scnr = new Scanner(System.in);
 	public static void main(String[] args) {
+		ensureAllFilesExist();//Put all of the Lines of code dealing with ensuring the .txt files were there into a single method.
+		
 		boolean mainMenu = true;//As long as this is true it will keep looping the program
-		Path scmPath = Paths.get("singleClubMembers.txt");
-		if(Files.notExists(scmPath)) {
-			try {
-				Files.createFile(scmPath);
-			}catch (IOException e) {
-				System.out.println("Could not create file. " + e);
-			}
-		}
-		Path clubsPath = Paths.get("clubs.txt");
-		if(Files.notExists(clubsPath)) {
-			try {
-				Files.createFile(clubsPath);
-			}catch (IOException e) {
-				System.out.println("Could not create file. " + e);
-			}
-		}
-		Path mcmPath = Paths.get("multiClubMembers.txt");
-		if(Files.notExists(mcmPath)) {
-			try {
-				Files.createFile(mcmPath);
-			}catch (IOException e) {
-				System.out.println("Could not create file. " + e);
-			}
-		}
-		
-		
 		do {
-			System.out.println("===Main Menu===");
-			System.out.println("1. Add Member");//
-			System.out.println("2. Remove Member");//
-			System.out.println("3. Display Member Information");//
-			System.out.println("4. Check In");//
-			System.out.println("5. Generate Bill");//
-			System.out.println("6. Exit");//
+			System.out.println("===Main Menu===\n1. Add Member\n2. Remove Member\n3. Display Member Information\n4. Check In\n5. Generate Bill\n6. Exit");//
 			
 			System.out.print("What would you like to do?: ");
 			int menuChoice = scnr.nextInt();//Declares the choice for the switch
+			scnr.nextLine();
 			
 			switch(menuChoice) {
 			case 1://Add Member
 				addMember(scnr);
 				break;
 			case 2://Remove Member
-				System.out.println("This will remove a member");
+				removeMember(scnr);
 				break;
 			case 3://Display Member
-				System.out.println("This will display member information");
+				printSingleOrMulti(scnr);
 				break;
 			case 4://Check In
 				System.out.println("This will check a member in");
@@ -117,11 +87,9 @@ public class MidTerm {
 		int id;
 		String name;
 		
-		System.out.print("What is the new member's name?: ");
+		System.out.print("What is the new member's name first and last name (ex. Fred Flinstone): ");
 		name = scnr.nextLine();
-		System.out.print("What is the new Members id number?: ");
-		id = scnr.nextInt();
-		scnr.nextLine();
+		id = addID(scnr);
 		System.out.println("What club do you want to add " + name + " to?\n1. Detroit\n2. Ann Arbor\n3. Plymouth\n4. Taylor");
 		clubChoice = scnr.nextInt();
 		switch(clubChoice) {
@@ -147,17 +115,11 @@ public class MidTerm {
 		}
 	}
 	public static void addMultiClubMember(Scanner scnr) {
-		boolean addNewMember = true;
-		int userChoice = 0;
-		int clubChoice =0;
-		String whatClub = null;
 		int id;
 		String name;
 		System.out.print("What is the new member's name?: ");
 		name = scnr.nextLine();
-		System.out.print("What is the new Members id number?: ");
-		id = scnr.nextInt();
-		scnr.nextLine();
+		id = addID(scnr);
 		int points = 0;
 		MultiClubMembers newMultiClubMember = new MultiClubMembers(id, name, points);//This section is for adding new MultiClub members
 		try {
@@ -165,6 +127,162 @@ public class MidTerm {
 		} catch (IOException e) {
 			System.out.println("Could not edit file.");
 		}
+	}
+	public static void printSingleClubMember() {
+		List<SingleClubMember> scm = SingleClubMemberFileUtil.readFile();
+		int i = 0;
+		for (SingleClubMember smc : scm) {
+			i++;
+			System.out.printf("%-4s%-28s%-10s%-12s\n", i + ". ", "Name: " + smc.getName(), "ID: " + smc.getId(), smc.getClub() );
+		}
+	}
+	public static void printMultiClubMember() {
+		List<MultiClubMembers> mcm = MultiClubMemberFileUtil.readFile();
+		int i = 0;
+		for (MultiClubMembers multiCM : mcm) {
+			i++;
+			System.out.printf("%-4s%-28s%-10s%-12s\n", i+ ". ", "Name: " + multiCM.getName(), "ID: " + multiCM.getId(), "Points: " + multiCM.getMembershipPoints() );
+		}
+	}
+	public static void printSingleOrMulti(Scanner scnr) {
+		boolean goAhead = true;
+		do {
+			System.out.print("What group do you want to see?:\n1. Single Club Memebers\n2. Multi Club members");
+			int selection = scnr.nextInt();
+			scnr.nextLine();
+			switch (selection) {
+			case 1:
+				printSingleClubMember();
+				goAhead = false;
+				break;
+			case 2:
+				printMultiClubMember();
+				goAhead = false;
+				break;
+			default:
+				System.out.println("That was not a valid choice! Try again.");
+				goAhead = true;
+				break;
+			}
+		}while(goAhead);
+	}
+	public static void removeSingleClubMember(int removeID) {
+		int i = 0;
+		List<SingleClubMember> singleMC = SingleClubMemberFileUtil.readFile();
+		String goneMember = null;
+		for (SingleClubMember smc : singleMC) {
+			if(smc.getId() == removeID) {
+				goneMember = smc.getName();
+				try {
+					singleMC.remove(i);
+				}catch(IndexOutOfBoundsException ex) {}
+				try {
+					SingleClubMemberFileUtil.rewriteFile(singleMC);
+				} catch (IOException e) {
+					System.out.println("Unable to write to file!");
+				}
+				System.out.println("Successfully removed: " + goneMember);
+			}
+			i++;
+		}
+	}
+	public static void removeMultiClubMember(int removeID) {
+		int i = 0;
+		List<MultiClubMembers> multiMC = MultiClubMemberFileUtil.readFile();
+		String goneMember = null;
+		for (MultiClubMembers mmc : multiMC) {
+			if(mmc.getId() == removeID) {
+				goneMember = mmc.getName();
+				try {
+					multiMC.remove(goneMember);
+				}catch(IndexOutOfBoundsException ex) {}
+				try {
+					MultiClubMemberFileUtil.rewriteFile(multiMC);
+				} catch (IOException e) {
+					System.out.println("Unable to write to file!");
+				}
+				System.out.println("Successfully removed: " + goneMember);
+			}
+			i++;
+		}
+	}
+	public static void ensureAllFilesExist() {
+		Path scmPath = Paths.get("singleClubMembers.txt");
+		if(Files.notExists(scmPath)) {
+			try {
+				Files.createFile(scmPath);
+			}catch (IOException e) {
+				System.out.println("Could not create file. " + e);
+			}
+		}
+		Path clubsPath = Paths.get("clubs.txt");
+		if(Files.notExists(clubsPath)) {
+			try {
+				Files.createFile(clubsPath);
+			}catch (IOException e) {
+				System.out.println("Could not create file. " + e);
+			}
+		}
+		Path mcmPath = Paths.get("multiClubMembers.txt");
+		if(Files.notExists(mcmPath)) {
+			try {
+				Files.createFile(mcmPath);
+			}catch (IOException e) {
+				System.out.println("Could not create file. " + e);
+			}
+		}
+	}
+	public static void removeMember(Scanner scnr) {
+		System.out.println("What is the ID of the member you would like to remove.");
+		int removeID = scnr.nextInt();
+		scnr.nextLine();
+		removeSingleClubMember(removeID);//If the removeID variable matches any of the ID's in the SingleClubMember list it will remove that member. Otherwise it does nothing.
+		removeMultiClubMember(removeID);//If the removeID variable matches any of the ID's in the MultiClubMember list it will remove that member. Otherwise it does nothing.
+	}
+	public static int addID(Scanner scnr) {
+		int id;
+		boolean goodID = true;
+		do {
+			goodID = true;
+			//System.out.print("What is the new Members id number?: ");
+			id = getID();
+			//scnr.nextLine();
+			List<SingleClubMember> singleMC = SingleClubMemberFileUtil.readFile();//Populates a List with the Single Club Members
+			for (SingleClubMember smc : singleMC) {//Cycles through the members
+				if(smc.getId() == id) {//Checks each member's id to see if it matches the id entered, if it does the body of the if statement is activated
+				goodID = false;	
+				System.out.println("That ID number has already been taken try another.");
+				break;
+				}
+				goodID = true;//if no matches were found this stays as a good ID
+			}
+			if(goodID) {
+				List<MultiClubMembers> multiMC = MultiClubMemberFileUtil.readFile();//populates a list with the Multi-Club Members
+				for (MultiClubMembers mmc : multiMC) {//Cycles through the members
+					if(mmc.getId() == id) {//Checks each member's id to see if it matches the id entered, if it does the body of the if statement is activated
+					goodID = false;	
+					System.out.println("That ID number has already been taken try another.");
+					break;
+					}
+					goodID = true;//if no matches were found in either test then this ID is not in use
+				}
+			}
+		}while(!goodID);
+		return id;
+	}
+	public static int getID() {
+		boolean goodID = true;
+		int id = 0;
+		do {
+			id = 1 + (int)(Math.random() * 9999);
+			if(Integer.toString(id).matches("[0-9]{4}")){
+				
+			}else {
+				goodID = false;
+			}
+		}while (!goodID);
+		return id;
+		
 	}
 }
 				

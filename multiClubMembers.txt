@@ -1,1 +1,6 @@
-Vince	66	0
+ElleDriver	9230	0
+Mia Wallace	7956	0
+Richie Gecko	3217	0
+Marsellus Wallace	3700	0
+Mickey Knox	2059	0
+Mallory Knox	2732	0
