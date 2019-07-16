@@ -31,7 +31,52 @@ public class MidTerm {
 				printSingleOrMulti(scnr);
 				break;
 			case 4://Check In
-				System.out.println("This will check a member in");
+				System.out.println("1. Detroit\n2. Ann Arbor\n3. Plymouth\n4. Taylor");
+				System.out.println("What location would you like to check in?");
+				int location = scnr.nextInt();
+				scnr.nextLine();
+				System.out.println("What is your ID?");
+				int userId = scnr.nextInt();
+				scnr.nextLine();
+				switch (location) {
+				case 1:
+					if (checkIn(userId, "Detroit")) {
+						System.out.println("Welcome to our Detroit facility!");
+
+					} else {
+						System.out.println(
+								"Sorry but you are not member of this club,ask an associate how to become a member.");
+					}
+					break;
+				case 2:
+					if (checkIn(userId, "Ann Arbor")) {
+						System.out.println("Welcome to our Ann Arbor facility!");
+
+					} else {
+						System.out.println(
+								"Sorry but you are not member of this club,ask an associate how to become a member.");
+					}
+					break;
+				case 3:
+					if (checkIn(userId, "Plymouth")) {
+						System.out.println("Welcome to our Plymouth  facility!");
+
+					} else {
+						System.out.println(
+								"Sorry but you are not member of this club,ask an associate how to become a member.");
+					}
+					break;
+				case 4:
+					if (checkIn(userId, "Taylor")) {
+						System.out.println("Welcome to our Taylor  facility!");
+
+					} else {
+						System.out.println(
+								"Sorry but you are not member of this club,ask an associate how to become a member.");
+					}
+					break;
+
+				}
 				break;
 			case 5://Generate Bill
 				System.out.println("This will generate the bill");
@@ -283,6 +328,41 @@ public class MidTerm {
 		}while (!goodID);
 		return id;
 		
+	}
+
+	public static boolean checkIn(int userId, String clubName) {
+		int i = 0;
+		boolean verifyMembership = false;
+		List<SingleClubMember> singleMc = SingleClubMemberFileUtil.readFile();
+
+		for (SingleClubMember smc : singleMc) {
+			if (smc.getId() == userId) {
+				if (smc.getClub().equalsIgnoreCase(clubName)) {
+					verifyMembership = true;
+				} else {
+					verifyMembership = false;
+				}
+				break;
+
+			} else {
+				List<MultiClubMembers> multiMC = MultiClubMemberFileUtil.readFile();
+				for (MultiClubMembers mmc : multiMC) {
+					if (mmc.getId() == userId) {
+						verifyMembership = true;
+						System.out.println("Congratulations, you gained 50 points!");
+						int tempPoints = mmc.getMembershipPoints() + 50;
+						mmc.setMembershipPoints(tempPoints);
+						break;
+					} else {
+						System.out.println("ID number does not exist");
+						verifyMembership = false;
+					}
+					break;
+				}
+			}
+			break;
+		}
+		return verifyMembership;
 	}
 }
 				
