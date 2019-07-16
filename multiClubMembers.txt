@@ -4,3 +4,4 @@ Richie Gecko	3217	50
 Marsellus Wallace	3700	0
 Mickey Knox	2059	50
 Mallory Knox	2732	0
+Tom Hanks	5948	0

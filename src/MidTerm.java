@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.NumberFormat;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -58,7 +59,7 @@ public class MidTerm {
 		String name;
 		do {
 			
-			System.out.println("What type of member are you adding?\n1. Single Club Member\n2. Multi-Club Member\n3. Main Menu");
+			System.out.println("\nWhat type of member are you adding?\n1. Single Club Member\n2. Multi-Club Member\n3. Main Menu");
 			try {
 				userChoice = scnr.nextInt();
 				scnr.nextLine();
@@ -94,7 +95,7 @@ public class MidTerm {
 		System.out.print("What is the new member's name first and last name (ex. Fred Flinstone): ");
 		name = scnr.nextLine();
 		id = addID(scnr);
-		System.out.println("What club do you want to add " + name + " to?\n1. Detroit\n2. Ann Arbor\n3. Plymouth\n4. Taylor");
+		System.out.println("\nWhat club do you want to add " + name + " to?\n1. Detroit\n2. Ann Arbor\n3. Plymouth\n4. Taylor");
 		clubChoice = scnr.nextInt();
 		switch(clubChoice) {
 		case 1://Detroit
@@ -111,7 +112,7 @@ public class MidTerm {
 			break;
 		}
 		SingleClubMember newSingleClubMember = new SingleClubMember(id, name, whatClub);//This section is for adding new SingleClub members
-		System.out.println(newSingleClubMember);
+		System.out.println("Successfully added : " + newSingleClubMember);
 		try {
 			SingleClubMemberFileUtil.appendToFile(newSingleClubMember);
 		} catch (IOException e) {
@@ -121,7 +122,7 @@ public class MidTerm {
 	public static void addMultiClubMember(Scanner scnr) {
 		int id;
 		String name;
-		System.out.print("What is the new member's name?: ");
+		System.out.print("What is the new member's name first and last name (ex. Fred Flinstone): ");
 		name = scnr.nextLine();
 		id = addID(scnr);
 		int points = 0;
@@ -131,6 +132,7 @@ public class MidTerm {
 		} catch (IOException e) {
 			System.out.println("Could not edit file.");
 		}
+		System.out.println("Successfully added: " + newMultiClubMember);
 	}
 	public static void printSingleClubMember() {
 		List<SingleClubMember> scm = SingleClubMemberFileUtil.readFile();
@@ -391,6 +393,7 @@ public class MidTerm {
 	}
 	public static void generateBillSingle(int userID) {
 		List<SingleClubMember> singleMc = SingleClubMemberFileUtil.readFile();
+		NumberFormat defaultFormat = NumberFormat.getCurrencyInstance();
 		double monthlyMembership = 30.00;
 		double cleaningFee = 5.00;
 		double maitnenceFee = 10.00;
@@ -398,18 +401,20 @@ public class MidTerm {
 		double tax = (subtotal * 0.07);
 		for (SingleClubMember smc : singleMc) {
 			if (smc.getId() == userID) {
-				System.out.println("Bill for " + smc.getName() + ":");
-				System.out.println("Monthly membership: $" + monthlyMembership);
-				System.out.println("Cleaning fees: $" + cleaningFee);
-				System.out.println("Mainence fees: $" + maitnenceFee);
-				System.out.println("Subtotal: $" + subtotal);
-				System.out.println("Taxes: $" + tax);
-				System.out.println("Total: $" + (tax + subtotal) + "\n");
+				System.out.println("\nBill for " + smc.getName() + ":");
+				System.out.println("Monthly membership: " + defaultFormat.format(monthlyMembership));
+				System.out.println("Cleaning fees: " + defaultFormat.format(cleaningFee));
+				System.out.println("Mainence fees: " + defaultFormat.format(maitnenceFee));
+				System.out.println("Subtotal: " + defaultFormat.format(subtotal));
+				System.out.println("Taxes: " + defaultFormat.format(tax));
+				System.out.println("Total: " + defaultFormat.format(tax + subtotal) + "\n");
 			}
 	}
 }
 	public static void generateBillMulti(int userID) {
 		List<MultiClubMembers> multiMc = MultiClubMemberFileUtil.readFile();
+		NumberFormat defaultFormat = NumberFormat.getCurrencyInstance();
+
 		double monthlyMembership = 45.00;
 		double cleaningFee = 5.00;
 		double maitnenceFee = 10.00;
@@ -417,13 +422,13 @@ public class MidTerm {
 		double tax = (subtotal * 0.07);
 		for (MultiClubMembers mmc : multiMc) {
 			if (mmc.getId() == userID) {
-				System.out.println("Bill for " + mmc.getName() + ":");
-				System.out.println("Monthly membership: $" + monthlyMembership);
-				System.out.println("Cleaning fees: $" + cleaningFee);
-				System.out.println("Mainence fees: $" + maitnenceFee);
-				System.out.println("Subtotal: $" + subtotal);
-				System.out.println("Taxes: $" + tax);
-				System.out.println("Total: $" + (tax + subtotal));
+				System.out.println("\nBill for " + mmc.getName() + ":");
+				System.out.println("Monthly membership: " + defaultFormat.format(monthlyMembership));
+				System.out.println("Cleaning fees: " + defaultFormat.format(cleaningFee));
+				System.out.println("Mainence fees: " + defaultFormat.format(maitnenceFee));
+				System.out.println("Subtotal: " + defaultFormat.format(subtotal));
+				System.out.println("Taxes: " + defaultFormat.format(tax));
+				System.out.println("Total: " + defaultFormat.format(tax + subtotal));
 				System.out.println("Loyalty Points: " + mmc.getMembershipPoints() + "\n");
 			}
 	}
