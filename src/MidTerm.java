@@ -112,6 +112,7 @@ public class MidTerm {
 		boolean addNewMember = true;
 		int userChoice = 0;
 		int clubChoice =0;
+		boolean validChoice = true;
 		String whatClub = null;
 		int id;
 		String name;
@@ -119,8 +120,18 @@ public class MidTerm {
 		System.out.print("What is the new member's name first and last name (ex. Fred Flinstone): ");
 		name = scnr.nextLine();
 		id = addID(scnr);
-		System.out.println("\nWhat club do you want to add " + name + " to?\n1. Detroit\n2. Ann Arbor\n3. Plymouth\n4. Taylor");
-		clubChoice = scnr.nextInt();
+		do {
+			System.out.println("\nWhat club do you want to add " + name + " to?\n1. Detroit\n2. Ann Arbor\n3. Plymouth\n4. Taylor");
+			try {
+				clubChoice = scnr.nextInt();
+				scnr.nextLine();
+				validChoice = false;
+			}catch(InputMismatchException ex) {
+				System.out.println("That was not valid");
+				validChoice = true;
+				scnr.nextLine();
+			}
+		}while(validChoice);
 		switch(clubChoice) {
 		case 1://Detroit
 			whatClub = "Detroit";
