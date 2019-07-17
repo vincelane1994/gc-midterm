@@ -245,7 +245,7 @@ public class MidTerm {
 			if(mmc.getId() == removeID) {
 				goneMember = mmc.getName();
 				try {
-					multiMC.remove(goneMember);
+					multiMC.remove(i);
 				}catch(IndexOutOfBoundsException ex) {}
 				try {
 					MultiClubMemberFileUtil.rewriteFile(multiMC);
